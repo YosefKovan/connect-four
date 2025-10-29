@@ -13,7 +13,8 @@ def check_direction(board, row, col, direction, mark):
     while in_bounds(board, row, col):
           if board[row][col] == mark:
              count += 1
-             row, col = direction[0], direction[1]
+             row += direction[0]
+             col += direction[1]
           else:
               break
 
@@ -29,16 +30,20 @@ def check_all_directions(board, row, col, mark):
     if check_direction(board, row, col, (1, 0), mark) + check_direction(board, row, col, (-1, 0), mark) + 1 >= 4:
         return True
     #this will check the slant going from top left to bottom right
-    if check_direction(board, row, col, (-1, -1), mark) + check_direction(board, row, col, (-1, 1), mark) + 1 >= 4:
+    if check_direction(board, row, col, (-1, -1), mark) + check_direction(board, row, col, (1, 1), mark) + 1 >= 4:
         return True
     #this will check the slant going from bottom left to top right
-    if check_direction(board, row, col, (1, 1), mark) + check_direction(board, row, col, (-1, 1), mark) + 1 >= 4:
+    if check_direction(board, row, col, (1, -1), mark) + check_direction(board, row, col, (-1, 1), mark) + 1 >= 4:
         return True
 
 def has_winner(board):
     """returns if there is a winner"""
     for row_index, row in enumerate(board):
         for col_index in range(len(row)):
+            print(row_index, col_index)
+            if board[row_index][col_index] == '*':
+              continue
+
             if check_all_directions(board, row_index, col_index, board[row_index][col_index]):
                 return True
 
